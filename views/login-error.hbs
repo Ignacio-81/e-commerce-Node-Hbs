@@ -1,0 +1,18 @@
+<div class="container text-center my-3">
+    <div class="jumbotron" style="background-color: rgb(248, 62, 41);color: white;">
+        <h1>USER LOGIN ERROR</h1>
+        <h4>Check User and password or Register a new User...</h4>
+        <button class="btn btn-warning my-5" onclick="volver()">Go Back to LogIn Page</button>
+    </div>
+</div>
+
+<script>
+    function redireccionar(pagina) {
+        location.href = pagina;
+    } 
+
+    function volver() {
+        console.log('Go Back to Login');
+        redireccionar('/login')
+    }
+</script>

@@ -1,0 +1,21 @@
+<div class="container text-center my-3">
+    <div class="jumbotron" style="background-color: green;color: white;">
+
+        <h2><i>User Register OK: {{usuario}}</i></h2>
+        <br>
+        <h3>Name: {{nombre}}</h3>
+        <h3>LastName: {{apellido}}</h3>
+    </div>
+</div>
+{{!--         <button class="btn btn-success my-3" onclick="Gologin()">
+            GO
+        </button> --}}
+<script>
+
+    function Gologin() {
+
+        location.href = "/login"
+    }
+
+    setTimeout(Gologin, 2000)
+</script>
