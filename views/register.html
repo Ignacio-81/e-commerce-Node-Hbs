@@ -34,26 +34,6 @@
                   Please Register:
                 </h3>
                 <form
-                  action="/uploadFile"
-                  enctype="multipart/form-data"
-                  method="POST"
-                >
-                  Upload your Photo:
-                  <input
-                    type="file"
-                    name="myFile"
-                    class="btn btn-info btn-mg mb-1"
-                  />
-                  <input
-                    type="submit"
-                    id="userphotobtn"
-                    name="userphotobtn"
-                    class="btn btn btn-primary btn-mg mb-1"
-                    value="Upload"
-                  />
-                </form>
-                <br />
-                <form
                   id="registerform"
                   class="px-md-2"
                   action="/register"
@@ -83,7 +63,17 @@
                     />
                     <label class="form-label" for="password">Password</label>
                   </div>
-
+                  <!--                   <div class="form-outline">
+                    <input
+                      type="password"
+                      id="passwordcheck"
+                      name="passwordcheck"
+                      class="form-control"
+                    />
+                    <label class="form-label" for="passwordcheck"
+                      >Confirm your Password</label
+                    >
+                  </div> -->
                   <div class="form-outline">
                     <input
                       type="text"
@@ -105,30 +95,12 @@
                   </div>
                   <div class="form-outline">
                     <input
-                      type="number"
-                      id="age"
-                      name="age"
-                      class="form-control"
-                    />
-                    <label class="form-label" for="age">Your Age</label>
-                  </div>
-                  <div class="form-outline">
-                    <input
                       type="text"
                       id="phone"
                       name="phone"
                       class="form-control"
                     />
                     <label class="form-label" for="phone">Phone Number</label>
-                  </div>
-                  <div class="form-outline">
-                    <input
-                      type="text"
-                      id="address"
-                      name="address"
-                      class="form-control"
-                    />
-                    <label class="form-label" for="address">Address</label>
                   </div>
                   <button type="submit" class="btn btn-success btn-lg mb-1">
                     Register

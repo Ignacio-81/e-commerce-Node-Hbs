@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt";
 import LocalStrategy from "passport-local";
-import { User } from "../data/models/user.model.js";
+import { User } from "../models/user.model.js";
+import MongoClient from "../classes/MongoClient.class.js";
+
+const db = new MongoClient();
 
 const hashPasword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -12,15 +15,18 @@ const validatePassword = (plainPassword, hashedPassword) => {
 
 const loginStrategy = new LocalStrategy(async (username, password, done) => {
   try {
+    await db.connect();
     const user = await User.findOne({ username });
     if (!user || !validatePassword(password, user.password)) {
       //return done("Invalid credentials", null);
-      return done(null, false, { message: "Invelid Credentials" });
+      return done(null, false, { message: "Invalid Credentials" });
     }
 
     return done(null, user);
   } catch (err) {
     return done(err);
+  } finally {
+    await db.disconnect();
   }
 });
 
@@ -28,9 +34,12 @@ const registerStrategy = new LocalStrategy(
   { passReqToCallback: true },
   async (req, username, password, done) => {
     try {
+      console.log("registerStrategy");
+      await db.connect();
       const existingUser = await User.findOne({ username });
-
+      //await db.disconnect();
       if (existingUser) {
+        console.log("Error while register2");
         return done(null, false, { message: "Username Already in use" });
       }
 
@@ -39,16 +48,20 @@ const registerStrategy = new LocalStrategy(
         password: hashPasword(password),
         firstname: req.body.firstname,
         lastname: req.body.lastname,
-        age: req.body.age,
         phone: req.body.phone,
-        address: req.body.address,
       };
+      console.log(newUser);
+      // await db.connect();
       const createdUser = await User.create(newUser);
+
       //const createdUser = await User(data).save()
       req.user = createdUser;
       return done(null, createdUser);
     } catch (err) {
+      console.log("Error while register");
       return done("Error while register", null);
+    } finally {
+      await db.disconnect();
     }
   }
 );

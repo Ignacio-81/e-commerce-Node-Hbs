@@ -1,55 +1,49 @@
 import express, { urlencoded, json } from "express";
-import router from "./routes/index.js";
 import { engine } from "express-handlebars";
 import passport from "passport";
-import invalidUrl from "./middleware/invalidUrl.middleware.js";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { User } from "./data/models/user.model.js";
-import MongoStore from "connect-mongo";
 import session from "express-session";
-import { passportStrategies } from "./lib/passport.lib.js";
-import urlRegister from "./middleware/logger.mdw.js";
-import { configObject } from "./dataAccess/config/mongoConfig.js";
-import { dbInit } from "./dataAccess/config/index.js";
 import { Server as IOServer } from "socket.io";
-import { prodsService } from "./services/prodService.js";
 import os from "os";
 import cluster from "cluster";
-import { mongoConnect } from "./dataAccess/config/mongoConfig.js";
-import { errorLogger } from "./lib/logger.lib.js";
+import yargs from "yargs";
+
+import router from "./routes/index.js";
+import config from "./config/config.js";
+import invalidUrl from "./middleware/invalidUrl_log.mdw.js";
+import { User } from "./models/user.model.js";
+import { passportStrategies } from "./lib/passport.lib.js";
+import urlRegister from "./middleware/logger.mdw.js";
+import dataInit from "./helpers/index.js";
+import { logger } from "./lib/index.js";
+import { mongoSession } from "./config/mongoStoreConfig.js";
+import MongoClient from "./classes/MongoClient.class.js";
+import { chatService } from "./services/index.js";
+
+const db = new MongoClient();
 
 //************************************************************************* */
-//**************************Global Configuration Constants*******************/
-const PORT = 3000;
-const MODE = "fork";
+export const args = yargs(process.argv.slice(2))
+  .alias({
+    p: "port",
+    m: "mode",
+  })
+  .default({
+    port: config.port,
+    mode: "fork",
+  }).argv;
 //************************************************************************* */
-const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const app = express();
 
 app.use(json());
 app.use(urlencoded({ extended: false }));
-app.use(express.static(__dirname + "/data/uploads"));
-//Mongo DB set up
-const mongoOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
-app.use(
-  session({
-    secret: "coderhouse",
-    resave: false,
-    rolling: true,
-    saveUninitialized: false,
-    store: new MongoStore({
-      mongoUrl: configObject.mongoUrl,
-      mongoOptions,
-    }),
-    cookie: {
-      expires: 60000, //session will expire without activity
-    },
-  })
-);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use("/static", express.static(__dirname + "/public"));
+//app.use(express.static(__dirname + "/data/uploads"));
+//Mongo session set up
+app.use(session(mongoSession));
 
 app.engine(
   "hbs",
@@ -59,7 +53,6 @@ app.engine(
   })
 );
 app.set("view engine", ".hbs");
-app.use("/static", express.static(__dirname + "/public"));
 
 //passport configuration for authentification
 app.use(passport.initialize());
@@ -68,12 +61,11 @@ app.use(passport.session());
 passport.use("login", passportStrategies.loginStrategy);
 passport.use("register", passportStrategies.registerStrategy);
 
-if (MODE.toUpperCase() === "FORK") await dbInit();
-//await dbInit();
+//if (args.mode.toUpperCase() === "FORK") await dataInit();
 const cpus = os.cpus(); //get all cpus cores on the server
 
-if (cluster.isPrimary && MODE.toUpperCase() === "CLUSTER") {
-  await dbInit();
+if (cluster.isPrimary && args.mode.toUpperCase() === "CLUSTER") {
+  //await dataInit();
   console.log(`
   CPUS: ${cpus.length}
   Primary PID: ${process.pid}
@@ -86,12 +78,14 @@ if (cluster.isPrimary && MODE.toUpperCase() === "CLUSTER") {
     console.log(`Worker ${worker.process.pid} died`);
   });
 } else {
-  if (MODE.toUpperCase() === "CLUSTER") await mongoConnect();
+  //if (args.mode.toUpperCase() === "CLUSTER") await db.connect();
+
   passport.serializeUser((user, done) => {
     done(null, user._id);
   });
 
-  passport.deserializeUser((id, done) => {
+  passport.deserializeUser(async (id, done) => {
+    await db.connect();
     User.findById(id)
       .then((data) => {
         done(null, data);
@@ -99,17 +93,23 @@ if (cluster.isPrimary && MODE.toUpperCase() === "CLUSTER") {
       .catch((err) => {
         console.error(err);
       });
+    /*       .finally(async () => {
+        await db.disconnect();
+      }); */
   });
-  app.use("/", urlRegister, router);
+  app.use(urlRegister);
+  app.use(router);
   app.use(invalidUrl);
 
-  const expressServer = app.listen(PORT, () =>
-    console.log("Server listening on port : " + PORT + " Mode: " + MODE)
+  const expressServer = app.listen(args.port, () =>
+    console.log(
+      "Server listening on port : " + args.port + " Mode: " + args.mode
+    )
   );
 
   app.on("error", (err) => {
     console.log(err);
-    errorLogger().error(`Error on the socket App: ${err}`);
+    logger().error(`Error on the socket App: ${err}`);
   });
 
   const io = new IOServer(expressServer);
@@ -117,41 +117,29 @@ if (cluster.isPrimary && MODE.toUpperCase() === "CLUSTER") {
   io.on("connection", async (socket) => {
     try {
       console.log(`New client connection ${socket.id}`);
-
-      // send product for new client
-      socket.emit("server:products", await prodsService.getProducts());
-
-      // listen products from clients
-      socket.on("client:productData", async (productData) => {
+      //send chat message for new user
+      socket.emit("server:message", await chatService.findAllChats());
+      // listen new message from chat
+      socket.on("client:message", async (messageInfo) => {
         try {
-          // update product DB
-          productData.price = parseInt(productData.price);
-          await prodsService.addProduct(productData);
-
-          // send product to all clients
-          io.emit("server:products", await prodsService.getProducts());
+          // update message array
+          await chatService.saveChat({
+            msgtype: messageInfo.msgtype,
+            message: messageInfo.message,
+          });
+          // send message to all users
+          io.emit(
+            "server:message",
+            await chatService.findAllChatsByUser(messageInfo.user)
+          );
         } catch (err) {
-          throw new Error(`Error listening socket clientData: ${err}`);
+          console.log(err);
+          logger.errorLogger().error(`Error on the application: ${err}`);
         }
       });
-      /*     //send chat message for new user
-    socket.emit("server:message", await dbChats.getAll());
-
-    // listen new message from chat
-    socket.on("client:message", async (messageInfo) => {
-      try {
-        // update message array
-        await dbChats.save(messageInfo);
-        // send message to all users
-        io.emit("server:message", await dbChats.getAll());
-      } catch (err) {
-        console.log(err);
-        errorLogger().error(`Error on the application: ${err}`);
-      }
-    }); */
     } catch (err) {
       console.log(err);
-      errorLogger().error(`Error on the socket App: ${err}`);
+      logger.errorLogger().error(`Error on the socket App: ${err}`);
     }
   });
 }
