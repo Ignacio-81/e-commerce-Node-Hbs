@@ -1,6 +1,5 @@
 const socket = io();
 let Kart;
-let userLogged;
 
 const logStatus = () => {
   return new Promise((resolve, reject) => {
@@ -16,29 +15,17 @@ const logStatus = () => {
         });
     }, 1000);
   });
+  /*     var parameters = location.search.substring(1)
+        var temp = parameters.split("=");
+        document.getElementById("usertext").innerHTML = temp[1]; */
 };
 const getCartfetch = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      fetch("/api/carts")
+      fetch("/get-usercart")
         .then((response) => response.json())
         .then(function (response) {
           console.log("fetch usercart");
-          resolve(response);
-        })
-        .catch(function (error) {
-          reject('WE have a problem with "Fetch" command:' + error.message);
-        });
-    }, 1000);
-  });
-};
-const getAllProductsfetch = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      fetch("/api/products")
-        .then((response) => response.json())
-        .then(function (response) {
-          console.log("fetch allproducts");
           resolve(response);
         })
         .catch(function (error) {
@@ -52,7 +39,6 @@ const getLog = async () => {
     console.log(response);
     if (response.login == "true") {
       document.getElementById("usertext").innerHTML = response.user.username;
-      return response.user.username;
     } else {
       Swal.fire({
         title: "See you " + document.getElementById("usertext").textContent,
@@ -68,20 +54,14 @@ const getLog = async () => {
     }
   });
 };
-
-const getProducts = async () => {
-  await getAllProductsfetch().then((response) => {
-    console.log(response);
-    renderProducts(response);
-  });
-};
-
 const getCart = async () => {
   await getCartfetch().then((response) => {
     console.log(response);
     Kart = response;
   });
 };
+getLog();
+getCart();
 
 const logoutEvent = (event) => {
   event.preventDefault();
@@ -114,10 +94,10 @@ const sendData = (type, data) => {
   socket.emit(type, data);
 };
 
-const renderProducts = (productsByUser) => {
-  console.log("Data de producto : ", productsByUser);
+const renderProducts = (productData) => {
+  console.log("Data de producto : ", productData);
   productsPool.innerHTML = "";
-  productsByUser.forEach((product) => {
+  productData.forEach((product) => {
     const { name, price, thumbnail } = product;
     productsPool.innerHTML += `
             <tr>
@@ -143,7 +123,7 @@ const renderProducts = (productsByUser) => {
 };
 
 // Definimos la funcion submit handler, se ejecuta cuando se dispara el evento submit del form
-/* const submitProductHandler = async (event) => {
+const submitProductHandler = async (event) => {
   //Ejecutamos la funcion preventDefault() para evitar que se recargue la pagina
   event.preventDefault();
   await getLog();
@@ -158,12 +138,9 @@ const renderProducts = (productsByUser) => {
   productName.value = "";
   productPrice.value = "";
   produdctthumbnail.value = "";
-}; */
+};
 
-//productForm.addEventListener("submit", submitProductHandler);
-
-//************************************************************************ */
-//*********************Chats management and render ************************ */
+productForm.addEventListener("submit", submitProductHandler);
 
 const chatForm = document.getElementById("chatForm");
 const userName = document.getElementById("userName");
@@ -171,13 +148,8 @@ const message = document.getElementById("message");
 const messagesPool = document.getElementById("messagesPool");
 
 const renderMessage = (messagesData) => {
-  console.log("mensaje a mstrar : " + JSON.stringify(messagesData[0].messages));
-  const html = messagesData[0].messages.slice(1).map((messageInfo) => {
-    return `<div > <strong style="color:blue;">${messageInfo.username}</strong>
-    <em style="color:blue; font-style: italic;" >${messageInfo.msgtype}</em> 
-    <em style="color:green; font-style: italic;" >${messageInfo.message}</em> 
-    <em style="color:brown;"> [${messageInfo.timestamp}] </em>
-    </div>`;
+  const html = messagesData.map((messageInfo) => {
+    return `<div > <strong style="color:blue;">${messageInfo.username}</strong><em style="color:brown;"> [${messageInfo.hourDate}] </em><em style="color:green; font-style: italic;" >${messageInfo.message}</em> </div>`;
   });
 
   messagesPool.innerHTML = html.join(" ");
@@ -188,13 +160,13 @@ const renderMessage = (messagesData) => {
 const submitMessageHandler = async (event) => {
   //Ejecutamos la funcion preventDefault() para evitar que se recargue la pagina
   event.preventDefault();
-  const username = await getLog();
-  //let today = new Date();
-  //let date = today.toLocaleString();
+  await getLog();
+  let today = new Date();
+  let date = today.toLocaleString();
   // Definimos la informacion del mensaje, es un obejto con una propiedad "username" y "message"
   const messageInfo = {
-    user: username,
-    msgtype: "user",
+    username: userName.value,
+    hourDate: date,
     message: message.value,
   };
   // Ejecutamos la funcion sendMessage() que la encargada de enviar el mensaje al back pasandole como parametro la informacion del mensaje
@@ -208,7 +180,7 @@ const submitMessageHandler = async (event) => {
 chatForm.addEventListener("submit", submitMessageHandler);
 
 socket.on("server:message", renderMessage);
-//socket.on("server:products", renderProducts);
+socket.on("server:products", renderProducts);
 
 //************************************************************************ */
 //*********************Cart management and render ************************ */
@@ -218,7 +190,7 @@ const callCartform = async (event) => {
   event.preventDefault();
   cartmodal.innerHTML = "";
   Kart.products.forEach((product) => {
-    const { name, description, category, price, thumbnail, stock, timestamp } =
+    const { name, description, code, price, thumbnail, stock, timestamp } =
       product; // Destruct for product array
     //const indexProd = shopCart.idProd.indexOf(id); // get the index of this product
     //const totalPriceProd = price * shopCart.quantity[indexProd]; //get the total price for this product
@@ -232,7 +204,7 @@ const callCartform = async (event) => {
             </div>
            </div>
         <div class="d-flex flex-row align-items-center qty"><i class="fa fa-minus text-danger"></i>
-            <h5 class="text-grey mt-1 mr-1 ml-1">${category}</h5><i class="fa fa-plus text-success"></i></div>
+            <h5 class="text-grey mt-1 mr-1 ml-1">${code}</h5><i class="fa fa-plus text-success"></i></div>
         <div>
             <h5 class="text-grey">$${price}</h5>
         </div>
@@ -243,7 +215,7 @@ const callCartform = async (event) => {
 const cartCheckOutfetch = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      fetch("/api/cart/cart-checkout")
+      fetch("/cart-checkout")
         .then((response) => response.json())
         .then(function (response) {
           console.log("fetch cart checkout success");
@@ -278,12 +250,4 @@ const cartchkoutbtn = document.getElementById("cart-checkout");
 
 cartbutton.addEventListener("click", callCartform);
 cartchkoutbtn.addEventListener("click", cartCheckoutbtn);
-
-const loadPage = async () => {
-  userLogged = await getLog();
-  await getProducts();
-  await getCart();
-};
-
-window.addEventListener("load", loadPage);
 //casrtcountbtn.addEventListener("submit", callCartform);

@@ -15,72 +15,51 @@
     <title>LogIn</title>
   </head>
   <body>
-    <section class="h-100 h-custom" style="background-color: #8fc4b7">
-      <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col-lg-8 col-xl-6">
-            <div class="card rounded-3">
-              <img
-                src="https://s1.eestatic.com/2017/08/25/actualidad/actualidad_241740063_129998099_1706x960.jpg"
-                class="w-100"
-                style="
-                  border-top-left-radius: 0.3rem;
-                  border-top-right-radius: 0.3rem;
-                "
-                alt="Sample photo"
-              />
-              <div class="card-body p-4 p-md-5">
-                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">
-                  Please Log in:
-                </h3>
-
-                <form
-                  id="loginForm"
-                  class="px-md-2"
-                  action="/login"
-                  method="post"
-                >
-                  <div class="form-outline mb-4">
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="username"
-                      name="username"
-                      placeholder="name@example.com"
-                      required
-                      class="form-control"
-                    />
-                    <label class="form-label" for="username"
-                      >UserName (e-mail)</label
-                    >
-                  </div>
-                  <div class="form-outline mb-4">
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      class="form-control"
-                      required
-                    />
-                    <label class="form-label" for="password">Password</label>
-                  </div>
-
-                  <button type="submit" class="btn btn-success btn-lg mb-1">
-                    Login
-                  </button>
-                </form>
-                <hr />
-                <div class="d-flex justify-content-end">
+    <section class="h-100 h-custom" style="background-color: #8fc4b7;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-8 col-xl-6">
+              <div class="card rounded-3">
+                <img src="https://s1.eestatic.com/2017/08/25/actualidad/actualidad_241740063_129998099_1706x960.jpg"
+                  class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;"
+                  alt="Sample photo">
+                <div class="card-body p-4 p-md-5">
+                  <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Please Log in:</h3>
+      
+                  <form id="loginForm" class="px-md-2" action="/login" method="post">
+      
+                    <div class="form-outline mb-4">
+                        <input             
+                        type="email"
+                        class="form-control"
+                        id="username"
+                        name="username"
+                        placeholder="name@example.com"
+                        required
+                        class="form-control" />
+                      <label class="form-label" for="username">UserName (e-mail)</label>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="password" id="password" name="password" class="form-control" required />
+                        <label class="form-label" for="password">Password</label>
+                    </div>
+      
+          
+                    <button type="submit" class="btn btn-success btn-lg mb-1">Login</button>
+      
+                  </form>
+                  <hr />
+                  <div class="d-flex justify-content-end">
                   <button class="btn btn-success my-3" onclick="goRegister()">
-                    Register
-                  </button>
+                      Register
+                    </button>
+                    </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
     <div class="container">
       <footer
@@ -101,13 +80,14 @@
     </div>
 
     <script>
-      function redireccionar(pagina) {
-        location.href = pagina;
-      }
+        function redireccionar(pagina) {
+          location.href = pagina;
+        }
+  
+        function goRegister() {
+          redireccionar("/register");
+        }
+      </script>
 
-      function goRegister() {
-        redireccionar("/register");
-      }
-    </script>
   </body>
 </html>

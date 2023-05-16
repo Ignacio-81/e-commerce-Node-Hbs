@@ -4,51 +4,38 @@ import { createTransport } from "nodemailer";
 config();
 
 const transporter = createTransport({
-  service: "gmail",
+  host: "smtp.ethereal.email",
   port: 587,
   auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASSWORD,
+    user: "savion34@ethereal.email",
+    pass: "zxUfCDYDb8kJPPJ372",
   },
 });
 
-async function sendMailCartPurchased(userName, newOrder) {
-  const mailBody = `
-    <h2>Order Details</h2>
-    <table>
-      <tr>
-        <th>Product Name</th>
-        <th>Description</th>
-        <th>Quantity</th>
-      </tr>
-      ${newOrder.products
-        .map(
-          (product) => `
-        <tr>
-          <td>${product.name}</td>
-          <td>${product.description}</td>
-          <td>${product.qty}</td>
-        </tr>
-      `
-        )
-        .join("")}
-    </table>
-  
-    <h2>Order Information</h2>
-    <ul>
-      <li><strong>Order Number:</strong> ${newOrder.orderNumber}</li>
-      <li><strong>Order Timestamp:</strong> ${newOrder.timestamp}</li>
-      <li><strong>Order Status:</strong> ${newOrder.status}</li>
-      <li><strong>Username:</strong> ${newOrder.username}</li>
-      <li><strong>Delivery Address:</strong> ${newOrder.deliverAdd}</li>
-    </ul>
-  `;
+async function sendMailRegister() {
+  const mailOptRegister = {
+    from: "roma.tremblay59@ethereal.email",
+    to: "roma.tremblay59@ethereal.email",
+    subject: "Nuevo Usuario Registrado",
+    html: '<h1 style="color: blue;">Nuevo usario registrado <span style="color: green;"> Usuario</span></h1>',
+  };
+  try {
+    const info = await transporter.sendMail(mailOptRegister);
+
+    console.log(info);
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+async function sendMailCartPurchased(userName, userMail, userCart) {
   try {
     const mailOptCartPurchased = {
-      from: "E-Commerce Node CoderHouse",
-      to: `${process.env.GMAIL_USER}@gmail.com`,
-      subject: `Nuevo pedido de : ${userName} `,
-      html: mailBody,
+      from: "savion34@ethereal.email",
+      to: "savion34@ethereal.email",
+      subject: `Nuevo pedido de : ${userName} ${userMail} `,
+      html: `<h3 style="color: blue;">Nuevo carrito comprado : <span style="color: green;"> ${JSON.stringify(
+        userCart
+      )} </span></h3>`,
     };
     const info = await transporter.sendMail(mailOptCartPurchased);
 
@@ -59,5 +46,6 @@ async function sendMailCartPurchased(userName, newOrder) {
 }
 
 export const mailService = {
+  sendMailRegister,
   sendMailCartPurchased,
 };
