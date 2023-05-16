@@ -61,11 +61,11 @@ app.use(passport.session());
 passport.use("login", passportStrategies.loginStrategy);
 passport.use("register", passportStrategies.registerStrategy);
 
-//if (args.mode.toUpperCase() === "FORK") await dataInit();
+if (args.mode.toUpperCase() === "FORK") await dataInit();
 const cpus = os.cpus(); //get all cpus cores on the server
 
 if (cluster.isPrimary && args.mode.toUpperCase() === "CLUSTER") {
-  //await dataInit();
+  await dataInit();
   console.log(`
   CPUS: ${cpus.length}
   Primary PID: ${process.pid}
