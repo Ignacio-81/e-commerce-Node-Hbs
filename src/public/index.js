@@ -282,10 +282,10 @@ const cartCheckOutfetch = () => {
     setTimeout(() => {
       fetch("/api/carts/cart-checkout")
         .then((response) => response.json())
-        .then(function (response) {
+        .then(async function (response) {
           console.log("fetch cart checkout success");
           casrtcountbtn.innerText = "0";
-
+          await getOrder();
           resolve(response);
         })
         .catch(function (error) {
