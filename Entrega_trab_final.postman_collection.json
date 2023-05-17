@@ -1,38 +1,385 @@
 {
 	"info": {
-		"_postman_id": "1690870a-5fea-4cee-a734-fa6870c412fc",
-		"name": "1ra_Entrega_trab_final",
+		"_postman_id": "82d5b0f9-9b4a-4eea-b242-a1b382b24745",
+		"name": "Entrega_trab_final",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24367727"
 	},
 	"item": [
 		{
-			"name": "BuscarProductos/Prod by ID",
+			"name": "Products",
+			"item": [
+				{
+					"name": "GetProducts/Prod by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/products/ert3ggwgw",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"ert3ggwgw"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProducts/Prod by category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/products/category/Computer",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"category",
+								"Computer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"name\": \"Pencil \",\r\n    \"description\": \"blue pencil \",\r\n    \"category\": \"library\",\r\n    \"price\": 150,\r\n    \"thumbnail\": \"https://images.unsplash.com/photo-1587829741301-dc798b83add3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=865&q=80\",\r\n    \"stock\": 10\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProducto_ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/products/64654b91672f21788c371ac8",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"64654b91672f21788c371ac8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Cart Checkout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/carts/cart-checkout",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								"cart-checkout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Products From Cart By User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/carts",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userAddress\" : \"9 de julio 150\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/carts/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Product in Cart x ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"qty\" : 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/carts/6460e1d3bfa7360580d07ea0",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								"6460e1d3bfa7360580d07ea0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add product by ID to Cart by user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/carts/6460e1d3bfa7360580d07ea0",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								"6460e1d3bfa7360580d07ea0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar Cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/carts/644aff5c58fbd81f1c2dd494",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								"644aff5c58fbd81f1c2dd494"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"ignacio@mail.com\",\r\n    \"password\": \"asd\",\r\n    \"firstname\": \"Ignacio\",\r\n    \"lastname\": \"Badella\",\r\n    \"phone\": \"35155432\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chats",
+			"item": [
+				{
+					"name": "Add message to chat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"msgtype\" : \"user\",\r\n  \"message\" : \"Hola que tal, todo bien?\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/chats",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"chats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user chats",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/chats",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"chats"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get Orders By User",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/products",
+					"raw": "localhost:8080/order",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
-						"products"
+						"order"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "AgregarProducto",
+			"name": "login with user",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "  {\r\n    \"name\": \"car \",\r\n    \"description\": \"blue car \",\r\n    \"code\": \"0001134\",\r\n    \"price\": 12,\r\n    \"thumbnail\": \"https://images.unsplash.com/photo-1587829741301-dc798b83add3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=865&q=80\",\r\n    \"stock\": 12\r\n  }",
+					"raw": "{\r\n    \"username\": \"user@mail.com\",\r\n    \"password\": \"1234\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -40,47 +387,29 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/products",
+					"raw": "localhost:8080/login",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
-						"products"
+						"login"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "DeleteProducto_ID",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/products/2",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"products",
-						"2"
-					]
-				}
+			"name": "Get Log In Status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
 			},
-			"response": []
-		},
-		{
-			"name": "ModificarProducto x ID",
 			"request": {
-				"method": "PUT",
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "  {\r\n    \"name\": \"Apple\",\r\n    \"description\": \"Green Apple\",\r\n    \"code\": \"0000774\",\r\n    \"price\": 140,\r\n    \"thumbnail\": \"https://images.unsplash.com/photo-1587829741301-dc798b83add3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=865&q=80\",\r\n    \"stock\": 120\r\n  }",
+					"raw": "{\r\n    \"username\": \"ignacio@mail.com\",\r\n    \"password\": \"asd\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -88,120 +417,43 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/products/4",
+					"raw": "localhost:8080/loginstatus",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
-						"products",
-						"4"
+						"loginstatus"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Buscar prods x Carrito c/iD",
+			"name": "Log out",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ignacio@mail.com\",\r\n    \"password\": \"asd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "localhost:8080/api/carts/1/products",
+					"raw": "localhost:8080/logout",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"api",
-						"carts",
-						"1",
-						"products"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Crear Carrito",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/carts/",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carts",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Borrar Cart",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/carts/1",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carts",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Borrar prod en Carrito x ID",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/carts/1/products/2",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carts",
-						"1",
-						"products",
-						"2"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Add Prod by ID to Cart By Id",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/carts/1/products/4",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carts",
-						"1",
-						"products",
-						"4"
+						"logout"
 					]
 				}
 			},
