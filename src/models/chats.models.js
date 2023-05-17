@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
-
+/* 
+Chats Model for Mongo DB
+*/
 const MessageSchema = new Schema({
   username: { type: Schema.Types.String, require: true, max: 20 },
   msgtype: { type: Schema.Types.String, require: true, max: 10 },

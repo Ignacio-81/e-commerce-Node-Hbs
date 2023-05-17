@@ -5,7 +5,9 @@ import chatsRouter from "./chats.route.js";
 import ordersRouter from "./order.route.js";
 import { userlogin } from "../middleware/userlogin.js";
 import { Router } from "express";
-
+/* 
+Router Manager Index
+*/
 const router = Router();
 router.use(auth_log_reg_Router);
 router.use("/api/products", productsRouter);

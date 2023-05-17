@@ -1,5 +1,7 @@
 import { chatService } from "../services/index.js";
-
+/* 
+Chats Management Controller . 
+*/
 export default class ChatsController {
   async getChats(req, res) {
     try {

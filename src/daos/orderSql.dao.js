@@ -1,5 +1,7 @@
 import SqlDao from "./Sql.Dao.js";
-
+/* 
+Data Access Object Factory For Carts on MySQL
+*/
 let instance;
 
 export class OrderSqlDao extends SqlDao {

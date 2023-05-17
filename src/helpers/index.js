@@ -4,8 +4,10 @@ import insertProdsSql from "./create-prodsSql.js";
 import createProdTable from "./create-prodsSql.js";
 import MongoClient from "../classes/MongoClient.class.js";
 import insertUserMongo from "./create-usersMongo.js";
-//import { mongoConnect } from "../config/mongoConfig.js";
 import Config from "../config/config.js";
+/* 
+Data Initilization Manager for getting app ready to test, creating sets of data on Database
+*/
 
 export default async function dataInit() {
   try {
@@ -21,13 +23,12 @@ export default async function dataInit() {
         await db.disconnect();
         break;
       case "MySQL":
-        //MySQL
-        await createProdTable("products");
-        await insertProdsSql();
+        //MySQL - TO BE ADDED IN THE FUTURE
+        /* await createProdTable("products");
+        await insertProdsSql(); */
         break;
     }
   } catch (err) {
-    //console.error(err)
     throw new Error(`Error while creating tables and connection to DB ${err}`);
   }
 }

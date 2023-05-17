@@ -1,11 +1,13 @@
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+/* 
+User Register and Log in Management Controller
+*/
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const getIndexPage = (req, res) => {
-  // Esta ruta carga nuestro archivo index.html en la raíz de la misma
   console.log("get indexpage :" + req.user);
   res.sendFile(join(__dirname, "../public/index.html"));
 };

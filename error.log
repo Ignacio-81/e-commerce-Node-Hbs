@@ -33,3 +33,9 @@
 {"level":50,"time":1684353555188,"pid":54656,"hostname":"SOPINV-321","msg":"Error on the application: Error: Error: Error find chat by user in DB TypeError: Cannot read properties of undefined (reading 'toLowerCase')"}
 {"level":50,"time":1684353606360,"pid":54656,"hostname":"SOPINV-321","msg":"Error on the application: Error: Error find chat by user in DB TypeError: Cannot read properties of undefined (reading 'toLowerCase')"}
 {"level":50,"time":1684353749978,"pid":54656,"hostname":"SOPINV-321","msg":"Error on the application: Error: Error find chat by user in DB TypeError: Cannot read properties of undefined (reading 'toLowerCase')"}
+{"level":50,"time":1684362060434,"pid":77172,"hostname":"SOPINV-321","msg":"Error on the application: Error: Error find chat by user in DB TypeError: Cannot read properties of undefined (reading 'toLowerCase')"}
+{"level":50,"time":1684362198092,"pid":38908,"hostname":"SOPINV-321","msg":"Error on the application: Error: Error find chat by user in DB TypeError: Cannot read properties of undefined (reading 'toLowerCase')"}
+{"level":50,"time":1684362257975,"pid":21568,"hostname":"SOPINV-321","msg":"Error on the application: Error: Error find chat by user in DB TypeError: Cannot read properties of undefined (reading 'toLowerCase')"}
+{"level":50,"time":1684362320436,"pid":74784,"hostname":"SOPINV-321","msg":"Error on the application: Error: Error: Error find chat by user in DB TypeError: Cannot read properties of undefined (reading 'toLowerCase')"}
+{"level":50,"time":1684362437460,"pid":62540,"hostname":"SOPINV-321","msg":"Error on the application: Error: Error: Error find chat by user in DB TypeError: Cannot read properties of undefined (reading 'toLowerCase')"}
+{"level":50,"time":1684363835502,"pid":21996,"hostname":"SOPINV-321","msg":"Error on the application: Error: Error find chat by user in DB TypeError: Cannot read properties of undefined (reading 'toLowerCase')"}

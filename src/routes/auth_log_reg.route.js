@@ -2,7 +2,9 @@ import { auth_Log_Reg_Controller } from "../controllers/index.js";
 import { Router } from "express";
 import passport from "passport";
 import { userAuth } from "../middleware/authlogin.js";
-
+/*  
+Log in , Register and User Validation and authorization Router
+*/
 const router = Router();
 
 router.get("/", userAuth, auth_Log_Reg_Controller.getIndexPage);

@@ -1,6 +1,8 @@
 import { OrderMongoDao } from "./orderMongo.Dao.js";
 import { CartSqlDao } from "./cartsSql.dao.js";
-
+/* 
+Data Access Object Factory for User Orders
+*/
 export default class OrderDaoFactory {
   static getDao(db) {
     switch (db) {

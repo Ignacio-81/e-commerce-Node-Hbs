@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
-
+/* 
+Product Model for Mongo DB
+*/
 const prodsSchema = new Schema({
   name: { type: Schema.Types.String, require: true, max: 50 },
   description: { type: Schema.Types.String, require: true, max: 100 },

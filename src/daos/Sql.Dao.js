@@ -1,4 +1,8 @@
 import SqlClient from "../classes/SqlClient.class.js";
+/* 
+Repository - Data Access Object Factory For MySQL DataBase. 
+*/
+
 export default class SqlDao {
   constructor(table) {
     this.table = table;

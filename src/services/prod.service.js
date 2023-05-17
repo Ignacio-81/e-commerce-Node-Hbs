@@ -1,6 +1,8 @@
 import ProductDaoFactory from "../daos/productDaoFactory.js";
 import config from "../config/config.js";
-
+/* 
+Products Service
+*/
 const productApi = ProductDaoFactory.getDao(config.tipo_persistencia);
 
 async function getProducts(id) {

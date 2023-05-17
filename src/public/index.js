@@ -2,7 +2,7 @@ const socket = io();
 let Kart;
 let Order;
 let userLogged;
-
+//Get de log status for User to mantain session and main page
 const logStatus = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -18,6 +18,7 @@ const logStatus = () => {
     }, 1000);
   });
 };
+//Get Carts from server
 const getCartfetch = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -33,6 +34,7 @@ const getCartfetch = () => {
     }, 1000);
   });
 };
+//Get Orders From Server
 const getOrdersfetch = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -48,6 +50,7 @@ const getOrdersfetch = () => {
     }, 1000);
   });
 };
+//Get All Products from Server
 const getAllProductsfetch = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -63,6 +66,7 @@ const getAllProductsfetch = () => {
     }, 1000);
   });
 };
+//Manage log and re direct if not logged in
 const getLog = async () => {
   await logStatus().then((response) => {
     console.log(response);
@@ -178,26 +182,6 @@ const renderProducts = (productsByUser) => {
   });
 };
 
-// Definimos la funcion submit handler, se ejecuta cuando se dispara el evento submit del form
-/* const submitProductHandler = async (event) => {
-  //Ejecutamos la funcion preventDefault() para evitar que se recargue la pagina
-  event.preventDefault();
-  await getLog();
-  // Definimos la informacion del mensaje, es un obejto con una propiedad "username" y "message"
-  const productInfo = {
-    name: productName.value,
-    price: productPrice.value,
-    thumbnail: produdctthumbnail.value,
-  };
-
-  sendData("client:productData", productInfo);
-  productName.value = "";
-  productPrice.value = "";
-  produdctthumbnail.value = "";
-}; */
-
-//productForm.addEventListener("submit", submitProductHandler);
-
 //************************************************************************ */
 //*********************Chats management and render ************************ */
 
@@ -206,20 +190,35 @@ const message = document.getElementById("message");
 const messageTypeSelect = document.getElementById("messageType");
 const messagesPool = document.getElementById("messagesPool");
 
-const renderMessage = (messagesData) => {
-  console.log("mensaje a mstrar : " + JSON.stringify(messagesData[0].messages));
-  const html = messagesData[0].messages.slice(1).map((messageInfo) => {
-    return `<div > <strong style="color:blue;">${messageInfo.username}</strong>
-    <em style="color:blue; font-style: italic;" >${messageInfo.msgtype}</em> 
-    <em style="color:green; font-style: italic;" >${messageInfo.message}</em> 
-    <em style="color:brown;"> [${messageInfo.timestamp}] </em>
-    </div>`;
-  });
-
-  messagesPool.innerHTML = html.join(" ");
+const getChatHistory = async () => {
+  const messageInfo = {
+    username: userLogged,
+    msgtype: "loadpage",
+    message: "",
+  };
+  sendData("client:message", messageInfo);
 };
 
-// Definimos la funcion submit handler, se ejecuta cuando se dispara el evento submit del form
+const renderMessage = async (messagesData) => {
+  console.log("mensaje a mstrar : " + JSON.stringify(messagesData));
+  let html = "";
+  for (let i = 0; i < messagesData.length; i++) {
+    const messages = messagesData[i].messages;
+    html += messages
+      .slice(1)
+      .map((messageInfo) => {
+        return `<div>
+        <strong style="color: blue;">${messageInfo.username}</strong>
+        <em style="color: blue; font-style: italic;">${messageInfo.msgtype}</em>
+        <em style="color: green; font-style: italic;">${messageInfo.message}</em>
+        <em style="color: brown;">[${messageInfo.timestamp}]</em>
+      </div>`;
+      })
+      .join(" ");
+  }
+  messagesPool.innerHTML = html;
+  //}
+};
 
 const submitMessageHandler = async (event) => {
   //Ejecutamos la funcion preventDefault() para evitar que se recargue la pagina
@@ -239,9 +238,7 @@ const submitMessageHandler = async (event) => {
 };
 
 chatForm.addEventListener("submit", submitMessageHandler);
-
 socket.on("server:message", renderMessage);
-//socket.on("server:products", renderProducts);
 
 //************************************************************************ */
 //*********************Cart management and render ************************ */
@@ -356,11 +353,10 @@ orderbutton.addEventListener("click", callOrderform);
 /* const addcartbtn = document.getElementById("addcartButton");
 addcartbtn.addEventListener("click", calladdcart); */
 const loadPage = async () => {
-  userLogged = await getLog();
+  //await getLog();
   await getProducts();
   await getCart();
   await getOrder();
 };
 
 window.addEventListener("load", loadPage);
-//casrtcountbtn.addEventListener("submit", callCartform);

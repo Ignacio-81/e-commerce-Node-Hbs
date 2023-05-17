@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
-
+/* 
+Cart Model for Mongo DB
+*/
 const CartsSchema = new Schema({
   username: { type: Schema.Types.String, require: true, max: 100 },
   products: { type: Schema.Types.Array, require: true, max: 200 },

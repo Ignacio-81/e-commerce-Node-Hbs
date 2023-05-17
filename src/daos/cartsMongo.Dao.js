@@ -1,5 +1,8 @@
 import { carts } from "../models/carts.models.js";
 import MongoDao from "./mongo.Dao.js";
+/* 
+Data Access Object Factory For Carts on Mongo DB
+*/
 
 let instance;
 

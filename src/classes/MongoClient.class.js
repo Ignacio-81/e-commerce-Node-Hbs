@@ -3,6 +3,10 @@ import CustomError from "./CustomError.class.js";
 import DBClient from "./DBClient.class.js";
 import config from "../config/config.js";
 
+/* 
+MOngo DB Class to manage conections 
+*/
+
 export default class MongoClient extends DBClient {
   constructor() {
     super();

@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
-
+/* 
+ORder Model for Mongo DB
+*/
 const OrderSchema = new Schema({
   products: { type: Schema.Types.Array, require: true, max: 200 },
   orderNumber: { type: Schema.Types.Number, require: true, max: 100 },

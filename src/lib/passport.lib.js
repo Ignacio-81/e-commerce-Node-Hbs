@@ -2,7 +2,9 @@ import bcrypt from "bcrypt";
 import LocalStrategy from "passport-local";
 import { User } from "../models/user.model.js";
 import MongoClient from "../classes/MongoClient.class.js";
-
+/* 
+Passport Library Management 
+*/
 const db = new MongoClient();
 
 const hashPasword = (password) => {
@@ -18,7 +20,6 @@ const loginStrategy = new LocalStrategy(async (username, password, done) => {
     await db.connect();
     const user = await User.findOne({ username });
     if (!user || !validatePassword(password, user.password)) {
-      //return done("Invalid credentials", null);
       return done(null, false, { message: "Invalid Credentials" });
     }
 
@@ -54,7 +55,6 @@ const registerStrategy = new LocalStrategy(
       // await db.connect();
       const createdUser = await User.create(newUser);
 
-      //const createdUser = await User(data).save()
       req.user = createdUser;
       return done(null, createdUser);
     } catch (err) {

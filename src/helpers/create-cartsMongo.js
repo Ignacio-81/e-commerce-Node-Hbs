@@ -2,8 +2,7 @@ import { carts } from "../models//carts.models.js";
 
 const insertCartsMongo = async () => {
   try {
-    await carts.deleteMany(); //reset all the old products.
-    //Add new products:
+    await carts.deleteMany();
     await new carts({
       username: "user@mail.com",
       products: [

@@ -1,8 +1,9 @@
 import { mailService } from "./index.js";
 import OrderDaoFactory from "../daos/orderDaoFactory.js";
 import config from "../config/config.js";
-import mongoose from "mongoose";
-
+/* 
+Order Service
+*/
 const orderApi = OrderDaoFactory.getDao(config.tipo_persistencia);
 
 async function getOrders() {

@@ -1,9 +1,10 @@
 import { productService } from "../services/index.js";
-
+/* 
+Products Management Controller . 
+*/
 export default class ProductsController {
   async getProducts(req, res) {
     try {
-      //console.log(typeof req.params.id);
       const response = await productService.getProducts(req.params.id);
       res.status(200).json(response);
     } catch (e) {
@@ -49,7 +50,6 @@ export default class ProductsController {
 
   async delProduct(req, res) {
     try {
-      //const id = req.params.id ? Number(req.params.id) : null;
       await productService.delProd(req.params.id);
       res
         .status(201)

@@ -1,12 +1,14 @@
-//COnfiguration for My SQL database Version
-
+import config from "./config.js";
+/* 
+MySQL Database COnfiguration
+*/
 const configSql = {
   client: "mysql",
   connection: {
-    host: "127.0.0.1",
-    user: "root",
-    password: "28158598",
-    database: "coderhouse",
+    host: config.sql_host,
+    user: config.sql_username,
+    password: config.sql_password,
+    database: config.sql_Db,
   },
   pool: { min: 0, max: 7 },
 };

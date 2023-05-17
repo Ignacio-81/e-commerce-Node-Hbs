@@ -1,3 +1,5 @@
+/* DB Client and Database Error Management Class
+ */
 import CustomError from "./CustomError.class.js";
 
 export default class DBClient {

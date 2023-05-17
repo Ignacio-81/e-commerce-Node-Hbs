@@ -41,8 +41,6 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use("/static", express.static(__dirname + "/public"));
-//app.use(express.static(__dirname + "/data/uploads"));
-//Mongo session set up
 app.use(session(mongoSession));
 
 app.engine(
@@ -93,9 +91,6 @@ if (cluster.isPrimary && args.mode.toUpperCase() === "CLUSTER") {
       .catch((err) => {
         console.error(err);
       });
-    /*       .finally(async () => {
-        await db.disconnect();
-      }); */
   });
   app.use(urlRegister);
   app.use(router);
@@ -118,20 +113,22 @@ if (cluster.isPrimary && args.mode.toUpperCase() === "CLUSTER") {
     try {
       console.log(`New client connection ${socket.id}`);
       //send chat message for new user
+      //socket.emit("server:message", { _id: "new" });
       socket.emit("server:message", await chatService.findAllChats());
       // listen new message from chat
       socket.on("client:message", async (messageInfo) => {
         try {
-          // update message array
-
+          //if (messageInfo.msgtype != "loadpage") {
           await chatService.saveMsg(messageInfo.username, {
             msgtype: messageInfo.msgtype,
             message: messageInfo.message,
           });
+          //}
           // send message to all users
           io.emit(
             "server:message",
-            await chatService.findAllChatsByUser(messageInfo.username)
+            //await chatService.findAllChatsByUser(messageInfo.username)
+            await chatService.findAllChats()
           );
         } catch (err) {
           console.log(err);

@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
-
+/* 
+User MOdel for Mongo DB
+*/
 const userSchema = Schema({
   username: { type: String },
   password: { type: String },

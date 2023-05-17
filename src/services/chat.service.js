@@ -1,7 +1,7 @@
 import ChatsDaoFactory from "../daos/chatsDaoFactory.js";
 import config from "../config/config.js";
 /* 
-Servicio para el manejo de Chats del sistema
+User Chats Service
 */
 
 const chatsApi = ChatsDaoFactory.getDao(config.tipo_persistencia);

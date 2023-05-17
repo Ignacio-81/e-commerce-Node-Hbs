@@ -2,7 +2,9 @@ import { productService, orderService } from "./index.js";
 import CartDaoFactory from "../daos/cartDaoFactory.js";
 import config from "../config/config.js";
 import mongoose from "mongoose";
-
+/* 
+Carts Service 
+*/
 const cartsApi = CartDaoFactory.getDao(config.tipo_persistencia);
 
 async function getCartsById(id) {
@@ -102,19 +104,8 @@ async function modifProdInCartByUser(user, idProd, updateObj) {
     throw new Error(err);
   }
 }
-async function delCartById(id) {
-  try {
-    if (id) {
-      await cartsApi.deleteById(id);
-    } else {
-      throw new Error("Please send a valid id");
-    }
-  } catch (err) {
-    throw new Error(err);
-  }
-}
 
-async function delProdById(user, idProd) {
+async function delCartByIdAndUser(user, idProd) {
   try {
     if (idProd == 0) {
       throw new Error("Please send a valid id");
@@ -169,9 +160,8 @@ async function getCartbyUser(user) {
 export const cartsService = {
   getCartsById,
   CreateCart,
-  delProdById,
+  delCartByIdAndUser,
   addProdToCartByUser,
-  delCartById,
   cartCheckout,
   getCartbyUser,
   modifProdInCartByUser,

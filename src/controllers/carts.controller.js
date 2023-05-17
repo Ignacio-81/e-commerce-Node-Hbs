@@ -1,4 +1,7 @@
 import { cartsService } from "../services/index.js";
+/* 
+Cart Management Controller . 
+*/
 
 export default class CartsController {
   async getCart(req, res) {
@@ -35,7 +38,6 @@ export default class CartsController {
 
   async addProdToCart(req, res) {
     try {
-      //const id = req.params.id ? Number(req.params.id) : null;
       const response = await cartsService.addProdToCartByUser(
         req.user.username,
         req.params.id
@@ -55,10 +57,9 @@ export default class CartsController {
     }
   }
 
-  async delProdById(req, res) {
+  async delCartById(req, res) {
     try {
-      //const id = req.params.id ? Number(req.params.id) : null;
-      await cartsService.delProdById(req.user.username, req.params.id);
+      await cartsService.delCartByIdAndUser(req.user.username, req.params.id);
       res
         .status(201)
         .send(
@@ -74,7 +75,6 @@ export default class CartsController {
 
   async modifProdInCart(req, res) {
     try {
-      //const id = req.params.id ? Number(req.params.id) : null;
       await cartsService.modifProdInCartByUser(
         req.user.username,
         req.params.id,
@@ -90,36 +90,9 @@ export default class CartsController {
         .send("The cart with Id: " + req.params.id + " does not exists");
     }
   }
-  /* async delProdById(req, res) {
-    try {
-      await cartsService.delProdByIdINCartById(
-        req.params.id,
-        req.params.id_prod
-      );
-      res
-        .status(201)
-        .send(
-          "The product with Id: " +
-            req.params.id_prod +
-            " was deleted successfully"
-        );
-    } catch (e) {
-      console.log(e);
-      res
-        .status(404)
-        .send(
-          "The cart with Id: " +
-            req.params.id +
-            "Or de prod with ID: " +
-            req.params.id_prod +
-            " does not exists"
-        );
-    }
-  } */
 
   async cartCheckout(req, res) {
     try {
-      //console.log(req.user);
       const response = await cartsService.cartCheckout(req.user);
       res
         .status(200)

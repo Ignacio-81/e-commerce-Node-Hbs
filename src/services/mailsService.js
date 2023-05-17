@@ -1,6 +1,8 @@
 import { config } from "dotenv";
 import { createTransport } from "nodemailer";
-
+/* 
+Mail Service
+*/
 config();
 
 const transporter = createTransport({
@@ -46,7 +48,7 @@ async function sendMailCartPurchased(userName, newOrder) {
   try {
     const mailOptCartPurchased = {
       from: "E-Commerce Node CoderHouse",
-      to: `${process.env.GMAIL_USER}@gmail.com`,
+      to: `${process.env.NOTIFICATION_MAIL}`,
       subject: `Nuevo pedido de : ${userName} `,
       html: mailBody,
     };

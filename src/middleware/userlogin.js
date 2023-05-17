@@ -1,3 +1,6 @@
+/* 
+MiddleWare to check and validate user log in.
+*/
 export const userlogin = (req, res, next) => {
   if (req.user) {
     console.log("usuario logeado :" + req.user);

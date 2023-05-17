@@ -2,7 +2,9 @@ import CustomError from "./CustomError.class.js";
 import DBClient from "./DBClient.class.js";
 import configSql from "../config/sqlConfig.js";
 import knex from "knex";
-
+/* 
+MySQL  DB Class to manage conections 
+*/
 export default class SqlClient extends DBClient {
   constructor() {
     super();

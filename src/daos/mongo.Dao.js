@@ -1,5 +1,8 @@
 import MongoClient from "../classes/MongoClient.class.js";
 import CustomError from "../classes/CustomError.class.js";
+/* 
+Repository - Data Access Object Factory For Mongo DataBase. 
+*/
 
 export default class MongoDao {
   constructor(collection) {
@@ -10,8 +13,6 @@ export default class MongoDao {
   async findById(id) {
     try {
       await this.db.connect();
-      //Find object inside the array with the id
-
       const data = await this.collection.find({ _id: id });
       return data[0];
     } catch (err) {
@@ -55,11 +56,8 @@ export default class MongoDao {
   async create(data) {
     try {
       await this.db.connect();
-      //console.log(data);
-      //console.log("going to insert..");
       const res = await this.collection.create(data);
       console.log("New Item Inserted");
-      console.log(res);
       return res._id;
     } catch (err) {
       const error = new CustomError(
@@ -77,8 +75,6 @@ export default class MongoDao {
       await this.db.connect();
       const response = await this.collection.updateOne({ _id: id }, data);
       if (response.modifiedCount) {
-        console.log("respuesta");
-        console.log(response);
         return data;
       } else {
         throw new Error(`A problem while updating object: ${response}`);
