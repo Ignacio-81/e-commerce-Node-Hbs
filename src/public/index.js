@@ -1,5 +1,6 @@
 const socket = io();
 let Kart;
+let Order;
 let userLogged;
 
 const logStatus = () => {
@@ -32,6 +33,21 @@ const getCartfetch = () => {
     }, 1000);
   });
 };
+const getOrdersfetch = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      fetch("/order")
+        .then((response) => response.json())
+        .then(function (response) {
+          console.log("fetch orders");
+          resolve(response);
+        })
+        .catch(function (error) {
+          reject('WE have a problem with "Fetch" command:' + error.message);
+        });
+    }, 1000);
+  });
+};
 const getAllProductsfetch = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -52,7 +68,8 @@ const getLog = async () => {
     console.log(response);
     if (response.login == "true") {
       document.getElementById("usertext").innerHTML = response.user.username;
-      return response.user.username;
+      userLogged = response.user.username;
+      return JSON.stringify(response.user.username);
     } else {
       Swal.fire({
         title: "See you " + document.getElementById("usertext").textContent,
@@ -79,10 +96,26 @@ const getProducts = async () => {
 const getCart = async () => {
   await getCartfetch().then((response) => {
     console.log(response);
-    Kart = response;
+    if (response) {
+      casrtcountbtn.innerText = "1";
+      Kart = response;
+    } else {
+      casrtcountbtn.innerText = "0";
+    }
   });
 };
-
+const getOrder = async () => {
+  await getOrdersfetch().then((response) => {
+    console.log(response);
+    if (response) {
+      const count = Object.keys(response).length;
+      ordercountbtn.innerText = count.toString();
+      Order = response;
+    } else {
+      ordercountbtn.innerText = "0";
+    }
+  });
+};
 const logoutEvent = (event) => {
   event.preventDefault();
   Swal.fire({
@@ -138,6 +171,9 @@ const renderProducts = (productsByUser) => {
                     ${price}
                   </p>
                 </td>
+                <td>
+                    <button id="addcartButton"  onclick="addToCart()">Add to Cart</button>
+              </td>
             </tr>`;
   });
 };
@@ -166,8 +202,8 @@ const renderProducts = (productsByUser) => {
 //*********************Chats management and render ************************ */
 
 const chatForm = document.getElementById("chatForm");
-const userName = document.getElementById("userName");
 const message = document.getElementById("message");
+const messageTypeSelect = document.getElementById("messageType");
 const messagesPool = document.getElementById("messagesPool");
 
 const renderMessage = (messagesData) => {
@@ -188,13 +224,11 @@ const renderMessage = (messagesData) => {
 const submitMessageHandler = async (event) => {
   //Ejecutamos la funcion preventDefault() para evitar que se recargue la pagina
   event.preventDefault();
-  const username = await getLog();
-  //let today = new Date();
-  //let date = today.toLocaleString();
+  await getLog();
   // Definimos la informacion del mensaje, es un obejto con una propiedad "username" y "message"
   const messageInfo = {
-    user: username,
-    msgtype: "user",
+    username: userLogged,
+    msgtype: messageTypeSelect.value,
     message: message.value,
   };
   // Ejecutamos la funcion sendMessage() que la encargada de enviar el mensaje al back pasandole como parametro la informacion del mensaje
@@ -202,7 +236,6 @@ const submitMessageHandler = async (event) => {
 
   // Vaciamos el message input asi queda libre para escribir un nuevo mensaje
   message.value = "";
-  userName.readOnly = true;
 };
 
 chatForm.addEventListener("submit", submitMessageHandler);
@@ -215,20 +248,27 @@ socket.on("server:message", renderMessage);
 
 const callCartform = async (event) => {
   console.log("funcion callCartform", event);
+  console.log("funcion callCartform", Kart[0]);
   event.preventDefault();
   cartmodal.innerHTML = "";
-  Kart.products.forEach((product) => {
-    const { name, description, category, price, thumbnail, stock, timestamp } =
-      product; // Destruct for product array
-    //const indexProd = shopCart.idProd.indexOf(id); // get the index of this product
-    //const totalPriceProd = price * shopCart.quantity[indexProd]; //get the total price for this product
+  Kart[0].products.forEach((product) => {
+    const {
+      name,
+      description,
+      category,
+      price,
+      thumbnail,
+      stock,
+      qty,
+      timestamp,
+    } = product;
     cartmodal.innerHTML += `
         <div class="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
         <div class="mr-1"><img class="rounded" src="${thumbnail}" width="70"></div>
         <div class="d-flex flex-column align-items-center product-details"><span class="font-weight-bold">${name}</span>
 
             <div class="d-flex flex-row product-desc">
-                <div class="size mr-1"><span class="text-grey">Qty Available:</span><span class="font-weight-bold">&nbsp;${stock}</span></div>
+                <div class="size mr-1"><span class="text-grey">Qty for this Product:</span><span class="font-weight-bold">&nbsp;${qty}</span></div>
             </div>
            </div>
         <div class="d-flex flex-row align-items-center qty"><i class="fa fa-minus text-danger"></i>
@@ -243,16 +283,18 @@ const callCartform = async (event) => {
 const cartCheckOutfetch = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      fetch("/api/cart/cart-checkout")
+      fetch("/api/carts/cart-checkout")
         .then((response) => response.json())
         .then(function (response) {
           console.log("fetch cart checkout success");
+          casrtcountbtn.innerText = "0";
+
           resolve(response);
         })
         .catch(function (error) {
           reject('WE have a problem with "Fetch" command:' + error.message);
         });
-    }, 1000);
+    }, 2000);
   });
 };
 const cartCheckoutbtn = (event) => {
@@ -275,14 +317,49 @@ const cartbutton = document.getElementById("cartButton");
 const casrtcountbtn = document.getElementById("cartCount");
 const cartmodal = document.getElementById("cart-modal");
 const cartchkoutbtn = document.getElementById("cart-checkout");
+const ordercountbtn = document.getElementById("orderCount");
 
 cartbutton.addEventListener("click", callCartform);
 cartchkoutbtn.addEventListener("click", cartCheckoutbtn);
 
+const callOrderform = async (event) => {
+  console.log("funcion callCartform", event);
+  console.log("funcion callCartform", Order);
+  event.preventDefault();
+  orderthead.innerHTML = "";
+  for (const eachOrder of Order) {
+    orderthead.innerHTML += `
+    <tr>
+    <th>Order : </th>
+    <td>${eachOrder.orderNumber}</td>
+  </tr>
+    `;
+    for (const [index, product] of eachOrder.products.entries()) {
+      const { name, description } = product;
+      orderthead.innerHTML += `
+  <tr>
+    <th scope="row">${index + 1}</th>
+    <td>${name}</td>
+    <td>${description}</td>
+    <td><a><i class="fas fa-times"></i></a></td>
+  </tr>
+`;
+    }
+  }
+};
+const orderbutton = document.getElementById("orderButton");
+const ordermodal = document.getElementById("order-modal");
+const orderthead = document.getElementById("order-modal-thead");
+const ordertbody = document.getElementById("order-modal-body");
+orderbutton.addEventListener("click", callOrderform);
+
+/* const addcartbtn = document.getElementById("addcartButton");
+addcartbtn.addEventListener("click", calladdcart); */
 const loadPage = async () => {
   userLogged = await getLog();
   await getProducts();
   await getCart();
+  await getOrder();
 };
 
 window.addEventListener("load", loadPage);

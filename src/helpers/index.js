@@ -3,6 +3,7 @@ import insertCartsMongo from "./create-cartsMongo.js";
 import insertProdsSql from "./create-prodsSql.js";
 import createProdTable from "./create-prodsSql.js";
 import MongoClient from "../classes/MongoClient.class.js";
+import insertUserMongo from "./create-usersMongo.js";
 //import { mongoConnect } from "../config/mongoConfig.js";
 import Config from "../config/config.js";
 
@@ -14,8 +15,9 @@ export default async function dataInit() {
         //MongoDB
         const db = new MongoClient();
         await db.connect();
+        await insertUserMongo();
         await insertProdsMongo();
-        //await insertCartsMongo();
+        await insertCartsMongo();
         await db.disconnect();
         break;
       case "MySQL":

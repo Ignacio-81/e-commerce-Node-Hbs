@@ -123,14 +123,15 @@ if (cluster.isPrimary && args.mode.toUpperCase() === "CLUSTER") {
       socket.on("client:message", async (messageInfo) => {
         try {
           // update message array
-          await chatService.saveChat({
+
+          await chatService.saveMsg(messageInfo.username, {
             msgtype: messageInfo.msgtype,
             message: messageInfo.message,
           });
           // send message to all users
           io.emit(
             "server:message",
-            await chatService.findAllChatsByUser(messageInfo.user)
+            await chatService.findAllChatsByUser(messageInfo.username)
           );
         } catch (err) {
           console.log(err);

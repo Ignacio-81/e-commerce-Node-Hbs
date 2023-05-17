@@ -91,3 +91,5 @@
 {"level":40,"time":1684240160900,"pid":24216,"hostname":"SOPINV-321","msg":"Method & route GET /api/cart not implemented"}
 {"level":40,"time":1684246479705,"pid":23312,"hostname":"SOPINV-321","msg":"Method & route GET /api/cart not implemented"}
 {"level":40,"time":1684267331052,"pid":3268,"hostname":"SOPINV-321","msg":"Method & route GET /order not implemented"}
+{"level":40,"time":1684291053426,"pid":24456,"hostname":"SOPINV-321","msg":"Method & route GET /api/cart/cart-checkout not implemented"}
+{"level":40,"time":1684292424320,"pid":20856,"hostname":"SOPINV-321","msg":"Method & route GET /api/order not implemented"}

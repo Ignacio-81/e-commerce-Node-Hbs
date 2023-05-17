@@ -1,7 +1,9 @@
 import ChatsDaoFactory from "../daos/chatsDaoFactory.js";
 import config from "../config/config.js";
+/* 
+Servicio para el manejo de Chats del sistema
+*/
 
-//let chats = new ChatDao("chats");
 const chatsApi = ChatsDaoFactory.getDao(config.tipo_persistencia);
 
 async function findAllChats() {
@@ -29,6 +31,7 @@ async function findAllChatsByUser(user) {
 
 async function saveMsg(user, msgRequest) {
   try {
+    console.log(user);
     let chatFromUser = await findAllChatsByUser(user);
     if (Object.keys(chatFromUser).length === 0) {
       const idNuevoChat = await createChat(user);
