@@ -1,1 +1,3 @@
-artillery quick --count 50 -n 40 http://localhost:3000/api/products/ > result_fork.txt
+Trabajo FInal Node .js COderHouse.
+Se entrega Collection de postman para las funciones solicitadas. -> Entrega_trab_final.postman_collection
+Se entrega corriendo en Railways -> https://trabajofinalnodejs-production.up.railway.app/ (SOlo 90 hs disponibles a partir del 17/05/2023 a las 21 hs si no se puede revisar, por favor avisar a ignacio.badella@gmail.com y creo una cuenta nueva)
