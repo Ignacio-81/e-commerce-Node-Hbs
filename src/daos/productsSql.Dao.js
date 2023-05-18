@@ -10,7 +10,7 @@ export class ProducSqlDao extends SqlDao {
   }
 
   static getInstance() {
-    if (!instance) instance = new ProductMongoDao();
+    if (!instance) instance = new ProducSqlDao();
 
     return instance;
   }

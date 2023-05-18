@@ -24,7 +24,7 @@ export default async function dataInit() {
         break;
       case "MySQL":
         //MySQL - TO BE ADDED IN THE FUTURE
-        /* await createProdTable("products");
+        /*        await createProdTable("products");
         await insertProdsSql(); */
         break;
     }
