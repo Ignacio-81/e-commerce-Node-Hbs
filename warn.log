@@ -95,3 +95,4 @@
 {"level":40,"time":1684292424320,"pid":20856,"hostname":"SOPINV-321","msg":"Method & route GET /api/order not implemented"}
 {"level":40,"time":1684360105324,"pid":74592,"hostname":"SOPINV-321","msg":"Method & route GET /favicon.ico not implemented"}
 {"level":40,"time":1684362651996,"pid":46664,"hostname":"SOPINV-321","msg":"Method & route GET /favicon.ico not implemented"}
+{"level":40,"time":1684782744241,"pid":6332,"hostname":"SOPINV-321","msg":"Method & route GET /favicon.ico not implemented"}

@@ -353,7 +353,7 @@ orderbutton.addEventListener("click", callOrderform);
 /* const addcartbtn = document.getElementById("addcartButton");
 addcartbtn.addEventListener("click", calladdcart); */
 const loadPage = async () => {
-  //await getLog();
+  await getLog();
   await getProducts();
   await getCart();
   await getOrder();
